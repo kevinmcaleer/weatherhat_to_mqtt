@@ -10,6 +10,8 @@ from datetime import datetime
 mqtt_server = '192.168.1.152' # Replace with the IP or URI of the MQTT server you use
 client_id = "weatherhat"
 
+update_frequency_in_seconds = 5
+
 sensor = weatherhat.WeatherHAT()
 
 def on_connect(client, userdata, flags, rc):
@@ -32,8 +34,8 @@ while True:
     # update the sensor readings
     sensor.update(interval=1.0)
     
-    # sleep for 1 second 
-    sleep(1)
+    # sleep for update frequency second 
+    sleep(update_frequency_in_seconds)
 
     # build the payload
     now = datetime.now()
