@@ -1,1 +1,744 @@
-[{"id":"f6f2187d.f17ca8","type":"tab","label":"Flow 1","disabled":false,"info":""},{"id":"3cc11d24.ff01a2","type":"comment","z":"f6f2187d.f17ca8","name":"WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work","info":"\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.","x":350,"y":80,"wires":[]},{"id":"02d8dac3bbee1c39","type":"debug","z":"f6f2187d.f17ca8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","statusVal":"","statusType":"auto","x":970,"y":300,"wires":[]},{"id":"09494633a53fe6be","type":"influxdb out","z":"f6f2187d.f17ca8","influxdb":"d09d56e3e3e645aa","name":"","measurement":"weather","precision":"","retentionPolicy":"","database":"database","precisionV18FluxV20":"ms","retentionPolicyV18Flux":"","org":"organisation","bucket":"bucket","x":1020,"y":400,"wires":[]},{"id":"e7f931157bfb3d05","type":"mqtt in","z":"f6f2187d.f17ca8","name":"Loft Temp And Humidity","topic":"/home/temp/loft","qos":"2","datatype":"auto","broker":"01a46a26706680d2","nl":false,"rap":true,"rh":0,"inputs":0,"x":170,"y":400,"wires":[["d7154b050fab6683"]]},{"id":"bfe695353a0c54ac","type":"change","z":"f6f2187d.f17ca8","name":"Set location to Loft","rules":[{"t":"set","p":"payload.datetime","pt":"msg","to":"","tot":"date"},{"t":"set","p":"payload.location","pt":"msg","to":"Loft","tot":"str"}],"action":"","property":"","from":"","to":"","reg":false,"x":570,"y":400,"wires":[["cf4a07bd2a681fe0"]]},{"id":"d7154b050fab6683","type":"json","z":"f6f2187d.f17ca8","name":"","property":"payload","action":"","pretty":false,"x":370,"y":400,"wires":[["bfe695353a0c54ac"]]},{"id":"0bb78fe8a3345ed2","type":"mqtt in","z":"f6f2187d.f17ca8","name":"Hall Temp And Humidity","topic":"/home/temp/hall","qos":"2","datatype":"auto","broker":"01a46a26706680d2","nl":false,"rap":true,"rh":0,"inputs":0,"x":170,"y":460,"wires":[["b2a54c2cafd4410c"]]},{"id":"2fa60f31893c2385","type":"change","z":"f6f2187d.f17ca8","name":"Set location to Hall","rules":[{"t":"set","p":"payload.location","pt":"msg","to":"Hall","tot":"str"},{"t":"set","p":"payload.datetime","pt":"msg","to":"","tot":"date"}],"action":"","property":"","from":"","to":"","reg":false,"x":570,"y":460,"wires":[["8693c1aed94f8b78"]]},{"id":"b2a54c2cafd4410c","type":"json","z":"f6f2187d.f17ca8","name":"","property":"payload","action":"","pretty":false,"x":390,"y":460,"wires":[["2fa60f31893c2385"]]},{"id":"f09d52f02395923a","type":"mqtt in","z":"f6f2187d.f17ca8","name":"Bedroom Temp And Humidity","topic":"/home/temp/bedroom","qos":"2","datatype":"auto","broker":"01a46a26706680d2","nl":false,"rap":true,"rh":0,"inputs":0,"x":180,"y":520,"wires":[["3ed35d89a080781f"]]},{"id":"7972bd9ef9235bb1","type":"change","z":"f6f2187d.f17ca8","name":"Set location to Bedroom","rules":[{"t":"set","p":"payload.location","pt":"msg","to":"Bedroom","tot":"str"},{"t":"set","p":"payload.datetime","pt":"msg","to":"","tot":"date"}],"action":"","property":"","from":"","to":"","reg":false,"x":590,"y":520,"wires":[["da63be9026023b46"]]},{"id":"3ed35d89a080781f","type":"json","z":"f6f2187d.f17ca8","name":"","property":"payload","action":"","pretty":false,"x":390,"y":520,"wires":[["7972bd9ef9235bb1"]]},{"id":"0c61af6099fadd45","type":"mqtt in","z":"f6f2187d.f17ca8","name":"WeatherHat Data","topic":"weather","qos":"2","datatype":"utf8","broker":"01a46a26706680d2","nl":false,"rap":true,"rh":0,"inputs":0,"x":160,"y":620,"wires":[["5c1c314f355baf6b"]]},{"id":"5da4e248cabb293f","type":"change","z":"f6f2187d.f17ca8","name":"Set location to Summerhouse","rules":[{"t":"set","p":"payload.location","pt":"msg","to":"Summerhouse","tot":"str"}],"action":"","property":"","from":"","to":"","reg":false,"x":610,"y":620,"wires":[["a6ca1cef45311a1f"]]},{"id":"5c1c314f355baf6b","type":"json","z":"f6f2187d.f17ca8","name":"","property":"payload","action":"","pretty":false,"x":370,"y":620,"wires":[["5da4e248cabb293f"]]},{"id":"15cda22078e0c721","type":"influxdb out","z":"f6f2187d.f17ca8","influxdb":"d09d56e3e3e645aa","name":"","measurement":"weather","precision":"","retentionPolicy":"","database":"database","precisionV18FluxV20":"ms","retentionPolicyV18Flux":"","org":"organisation","bucket":"bucket","x":1020,"y":460,"wires":[]},{"id":"dafcc02295e3496b","type":"influxdb out","z":"f6f2187d.f17ca8","influxdb":"d09d56e3e3e645aa","name":"","measurement":"weather","precision":"","retentionPolicy":"","database":"database","precisionV18FluxV20":"ms","retentionPolicyV18Flux":"","org":"organisation","bucket":"bucket","x":1020,"y":520,"wires":[]},{"id":"73dee157f2a1f61e","type":"influxdb out","z":"f6f2187d.f17ca8","influxdb":"d09d56e3e3e645aa","name":"","measurement":"weather","precision":"","retentionPolicy":"","database":"database","precisionV18FluxV20":"ms","retentionPolicyV18Flux":"","org":"organisation","bucket":"bucket","x":1020,"y":620,"wires":[]},{"id":"cf4a07bd2a681fe0","type":"function","z":"f6f2187d.f17ca8","name":"Array","func":"var array1 = msg.payload;\nvar array2 = {location : \"Loft\"};\n\nmsg.payload = [array1,array2];\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":750,"y":380,"wires":[["02d8dac3bbee1c39","09494633a53fe6be"]]},{"id":"8693c1aed94f8b78","type":"function","z":"f6f2187d.f17ca8","name":"Array","func":"var array1 = msg.payload;\nvar array2 = {location : \"Hall\"};\n\nmsg.payload = [array1,array2];\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":770,"y":460,"wires":[["15cda22078e0c721"]]},{"id":"da63be9026023b46","type":"function","z":"f6f2187d.f17ca8","name":"Array","func":"var array1 = msg.payload;\nvar array2 = {location : \"Bedroom\"};\n\nmsg.payload = [array1,array2];\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":790,"y":520,"wires":[["dafcc02295e3496b"]]},{"id":"a6ca1cef45311a1f","type":"function","z":"f6f2187d.f17ca8","name":"Array","func":"var array1 = msg.payload;\nvar array2 = {location : \"Summerhouse\"};\n\nmsg.payload = [array1,array2];\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":810,"y":620,"wires":[["73dee157f2a1f61e"]]},{"id":"d09d56e3e3e645aa","type":"influxdb","hostname":"192.168.1.10","port":"8086","protocol":"http","database":"weather","name":"InfluxDB on Pi400","usetls":false,"tls":"","influxdbVersion":"1.x","url":"http://192.168.1.10:8086","rejectUnauthorized":true},{"id":"01a46a26706680d2","type":"mqtt-broker","name":"","broker":"192.168.1.152","port":"1883","clientid":"","autoConnect":true,"usetls":false,"protocolVersion":"4","keepalive":"60","cleansession":true,"birthTopic":"","birthQos":"0","birthPayload":"","birthMsg":{},"closeTopic":"","closeQos":"0","closePayload":"","closeMsg":{},"willTopic":"","willQos":"0","willPayload":"","willMsg":{},"sessionExpiry":""}]
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "97d8051d384e8504",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "01a46a26706680d2",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.152",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d09d56e3e3e645aa",
+        "type": "influxdb",
+        "hostname": "192.168.1.10",
+        "port": "8086",
+        "protocol": "http",
+        "database": "weather",
+        "name": "InfluxDB on Pi400",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://192.168.1.10:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "eeb221fb.ab27f",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "test",
+        "name": "test",
+        "usetls": true,
+        "tls": "d50d0c9f.31e858",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "d50d0c9f.31e858",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false
+    },
+    {
+        "id": "7cfcad7de1184066",
+        "type": "hue-bridge",
+        "name": "Philips hue",
+        "bridge": "192.168.1.250",
+        "key": "B4ZMmJBNm1acXxXJ7JzCVPWFUPcS7ppkXZSQRIW9",
+        "worker": "10",
+        "autoupdates": true,
+        "disableupdates": false
+    },
+    {
+        "id": "3cc11d24.ff01a2",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
+        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "02d8dac3bbee1c39",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "09494633a53fe6be",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "d09d56e3e3e645aa",
+        "name": "",
+        "measurement": "weather",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1020,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "e7f931157bfb3d05",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "Loft Temp And Humidity",
+        "topic": "/home/temp/loft",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "01a46a26706680d2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 400,
+        "wires": [
+            [
+                "d7154b050fab6683"
+            ]
+        ]
+    },
+    {
+        "id": "bfe695353a0c54ac",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "Set location to Loft",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.datetime",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload.location",
+                "pt": "msg",
+                "to": "Loft",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 400,
+        "wires": [
+            [
+                "cf4a07bd2a681fe0"
+            ]
+        ]
+    },
+    {
+        "id": "d7154b050fab6683",
+        "type": "json",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 370,
+        "y": 400,
+        "wires": [
+            [
+                "bfe695353a0c54ac"
+            ]
+        ]
+    },
+    {
+        "id": "0bb78fe8a3345ed2",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "Hall Temp And Humidity",
+        "topic": "/home/temp/hall",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "01a46a26706680d2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 460,
+        "wires": [
+            [
+                "b2a54c2cafd4410c"
+            ]
+        ]
+    },
+    {
+        "id": "2fa60f31893c2385",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "Set location to Hall",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.location",
+                "pt": "msg",
+                "to": "Hall",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.datetime",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 460,
+        "wires": [
+            [
+                "8693c1aed94f8b78"
+            ]
+        ]
+    },
+    {
+        "id": "b2a54c2cafd4410c",
+        "type": "json",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 390,
+        "y": 460,
+        "wires": [
+            [
+                "2fa60f31893c2385"
+            ]
+        ]
+    },
+    {
+        "id": "f09d52f02395923a",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "Bedroom Temp And Humidity",
+        "topic": "/home/temp/bedroom",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "01a46a26706680d2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 520,
+        "wires": [
+            [
+                "3ed35d89a080781f"
+            ]
+        ]
+    },
+    {
+        "id": "7972bd9ef9235bb1",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "Set location to Bedroom",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.location",
+                "pt": "msg",
+                "to": "Bedroom",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.datetime",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 590,
+        "y": 520,
+        "wires": [
+            [
+                "da63be9026023b46"
+            ]
+        ]
+    },
+    {
+        "id": "3ed35d89a080781f",
+        "type": "json",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 390,
+        "y": 520,
+        "wires": [
+            [
+                "7972bd9ef9235bb1"
+            ]
+        ]
+    },
+    {
+        "id": "0c61af6099fadd45",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "WeatherHat Data",
+        "topic": "weather",
+        "qos": "2",
+        "datatype": "utf8",
+        "broker": "01a46a26706680d2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 620,
+        "wires": [
+            [
+                "5c1c314f355baf6b"
+            ]
+        ]
+    },
+    {
+        "id": "5da4e248cabb293f",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "Set location to Summerhouse",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.location",
+                "pt": "msg",
+                "to": "Summerhouse",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 620,
+        "wires": [
+            [
+                "a6ca1cef45311a1f"
+            ]
+        ]
+    },
+    {
+        "id": "5c1c314f355baf6b",
+        "type": "json",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 370,
+        "y": 620,
+        "wires": [
+            [
+                "5da4e248cabb293f"
+            ]
+        ]
+    },
+    {
+        "id": "15cda22078e0c721",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "d09d56e3e3e645aa",
+        "name": "",
+        "measurement": "weather",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1020,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "dafcc02295e3496b",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "d09d56e3e3e645aa",
+        "name": "",
+        "measurement": "weather",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1020,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "73dee157f2a1f61e",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "d09d56e3e3e645aa",
+        "name": "",
+        "measurement": "weather",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1020,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "cf4a07bd2a681fe0",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Array",
+        "func": "var array1 = msg.payload;\nvar array2 = {location : \"Loft\"};\n\nmsg.payload = [array1,array2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 380,
+        "wires": [
+            [
+                "02d8dac3bbee1c39",
+                "09494633a53fe6be"
+            ]
+        ]
+    },
+    {
+        "id": "8693c1aed94f8b78",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Array",
+        "func": "var array1 = msg.payload;\nvar array2 = {location : \"Hall\"};\n\nmsg.payload = [array1,array2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 460,
+        "wires": [
+            [
+                "15cda22078e0c721"
+            ]
+        ]
+    },
+    {
+        "id": "da63be9026023b46",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Array",
+        "func": "var array1 = msg.payload;\nvar array2 = {location : \"Bedroom\"};\n\nmsg.payload = [array1,array2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 520,
+        "wires": [
+            [
+                "dafcc02295e3496b"
+            ]
+        ]
+    },
+    {
+        "id": "a6ca1cef45311a1f",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Array",
+        "func": "var array1 = msg.payload;\nvar array2 = {location : \"Summerhouse\"};\n\nmsg.payload = [array1,array2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 620,
+        "wires": [
+            [
+                "73dee157f2a1f61e"
+            ]
+        ]
+    },
+    {
+        "id": "afa967e805e6118b",
+        "type": "hue-bridge-node",
+        "z": "97d8051d384e8504",
+        "name": "",
+        "bridge": "7cfcad7de1184066",
+        "autoupdates": true,
+        "skipglobalevents": false,
+        "initevents": false,
+        "x": 100,
+        "y": 160,
+        "wires": [
+            [
+                "95b62628a5cd1c5b",
+                "2bc8eb11da14e674"
+            ]
+        ]
+    },
+    {
+        "id": "95b62628a5cd1c5b",
+        "type": "hue-temperature",
+        "z": "97d8051d384e8504",
+        "name": "Front door sensor",
+        "bridge": "7cfcad7de1184066",
+        "sensorid": "a76cd862-b94e-4c22-a544-e53f7691ce5f",
+        "skipevents": false,
+        "initevents": false,
+        "x": 330,
+        "y": 140,
+        "wires": [
+            [
+                "785f3e6aa3c4b5a2",
+                "f2ac849e8828f7ce"
+            ]
+        ]
+    },
+    {
+        "id": "2bc8eb11da14e674",
+        "type": "hue-brightness",
+        "z": "97d8051d384e8504",
+        "name": "Front door sensor",
+        "bridge": "7cfcad7de1184066",
+        "sensorid": "a76cd862-b94e-4c22-a544-e53f7691ce5f",
+        "skipevents": false,
+        "initevents": false,
+        "x": 330,
+        "y": 200,
+        "wires": [
+            [
+                "785f3e6aa3c4b5a2",
+                "e87c725831918e95"
+            ]
+        ]
+    },
+    {
+        "id": "785f3e6aa3c4b5a2",
+        "type": "debug",
+        "z": "97d8051d384e8504",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "f2ac849e8828f7ce",
+        "type": "change",
+        "z": "97d8051d384e8504",
+        "name": "Set location to Front Door",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.location",
+                "pt": "msg",
+                "to": "Front Door",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 140,
+        "wires": [
+            [
+                "fe198ce99f020c46"
+            ]
+        ]
+    },
+    {
+        "id": "fe198ce99f020c46",
+        "type": "function",
+        "z": "97d8051d384e8504",
+        "name": "Array",
+        "func": "var array1 = msg.payload;\nvar array2 = {location : \"Front Door\"};\n\nmsg.payload = [array1,array2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 180,
+        "wires": [
+            [
+                "a31eb57067c00eb4"
+            ]
+        ]
+    },
+    {
+        "id": "a31eb57067c00eb4",
+        "type": "influxdb out",
+        "z": "97d8051d384e8504",
+        "influxdb": "d09d56e3e3e645aa",
+        "name": "",
+        "measurement": "weather",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1040,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "e87c725831918e95",
+        "type": "change",
+        "z": "97d8051d384e8504",
+        "name": "Set location to Front Door",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.location",
+                "pt": "msg",
+                "to": "Front Door",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 320,
+        "wires": [
+            [
+                "48e0d4f5a2e831a8"
+            ]
+        ]
+    },
+    {
+        "id": "48e0d4f5a2e831a8",
+        "type": "function",
+        "z": "97d8051d384e8504",
+        "name": "Array",
+        "func": "var array1 = msg.payload;\nvar array2 = {location : \"Front Door\"};\n\nmsg.payload = [array1,array2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 320,
+        "wires": [
+            [
+                "be5e60b484247bb1"
+            ]
+        ]
+    },
+    {
+        "id": "be5e60b484247bb1",
+        "type": "influxdb out",
+        "z": "97d8051d384e8504",
+        "influxdb": "d09d56e3e3e645aa",
+        "name": "",
+        "measurement": "weather",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1040,
+        "y": 320,
+        "wires": []
+    }
+]
