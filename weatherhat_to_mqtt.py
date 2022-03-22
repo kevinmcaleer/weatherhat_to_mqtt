@@ -41,7 +41,7 @@ def hostAvail(hostname):
         return False
     return False
 
-while not hostAvail("weatherhatpi01"):
+while not hostAvail("weatherpi01"):
     print("Waiting for dbserver")
     sleep(2)
 
