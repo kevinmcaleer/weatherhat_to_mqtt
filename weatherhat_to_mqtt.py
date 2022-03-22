@@ -29,6 +29,24 @@ client.connect(host=mqtt_server)
 payload = "{something:true}"
 topic = 'weather'
 
+import socket
+
+# Wait until the network is and host name resolution is available:
+
+def hostAvail(hostname):
+    try:
+        socket.gethostbyname(hostname)
+        return True
+    except socket.error:
+        return False
+    return False
+
+while not hostAvail("weatherhatpi01"):
+    print("Waiting for dbserver")
+    sleep(2)
+
+# Continue with code here...
+
 while True:
 
     # update the sensor readings
