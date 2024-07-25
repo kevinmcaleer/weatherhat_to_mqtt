@@ -1,0 +1,11 @@
+[Unit]
+Description=Weather Script
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/weatherhat_to_mqtt/weatherhat_to_mqtt.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
